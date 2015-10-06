@@ -1,0 +1,13 @@
+<f:layout name="Default" />
+<f:section name="main">
+<h1>Listing for Piwigo</h1>
+	<f:for each="{categories}" as="category">
+		<div>
+			<h2>{category.name}</h2>
+			Images: {category.nb_images}<br>
+
+			<f:link.action action="show" arguments="{category: category.id}">Show Category {category.name}</f:link.action><br />
+			<img src="{category.tn_url}">
+		</div>
+	</f:for>
+</f:section>

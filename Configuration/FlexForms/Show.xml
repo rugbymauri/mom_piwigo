@@ -1,0 +1,30 @@
+
+
+<T3DataStructure>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <TCEforms>
+                    <sheetTitle>Optionen</sheetTitle>
+                </TCEforms>
+                <type>array</type>
+                <el>
+                    <settings.limit>
+                        <TCEforms>
+                            <label>Limit</label>
+                            <config>
+                                <type>input</type>
+                            </config>
+                        </TCEforms>
+                    </settings.limit>
+                    <settings.category>
+                        <label>Catagory</label>
+                        <config>
+                            <type>select</type>
+                        </config>
+                    </settings.category>
+                </el>
+            </ROOT>
+        </sDEF>
+    </sheets>
+</T3DataStructure>

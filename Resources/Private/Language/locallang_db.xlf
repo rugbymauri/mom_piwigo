@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2015-09-29T23:50:15Z" product-name="mom_piwigo">
+		<header/>
+		<body>
+			<trans-unit id="tx_mompiwigo_domain_model_piwigo">
+				<source>Piwigo</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

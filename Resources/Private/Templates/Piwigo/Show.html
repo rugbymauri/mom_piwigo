@@ -1,0 +1,31 @@
+
+<f:layout name="Default" />
+<f:section name="main">
+
+  <f:if condition="{categories}">
+    <h1>Categories</h1>
+  <f:for each="{categories}" as="category">
+    <div>
+      <h2>{category.name}</h2>
+      Images: {category.nb_images}<br>
+
+      <f:link.action action="show" arguments="{category: category.id}">Show Category {category.name}</f:link.action><br />
+      <img src="{category.tn_url}">
+    </div>
+  </f:for>
+  </f:if>
+
+
+  <f:if condition="{images}">
+  <h1>Images</h1>
+  <f:for each="{images}" as="image">
+    <div>
+      <h2>{image.name}</h2>
+      Id: {image.id}
+      <img src="{image.derivatives.square.url}" width="{image.derivatives.square.width}" height="{image.derivatives.square.height}">
+      <img src="{image.derivatives.medium.url}" width="{image.derivatives.medium.width}" height="{image.derivatives.medium.height}">
+    </div>
+  </f:for>
+  </f:if>
+
+</f:section>
