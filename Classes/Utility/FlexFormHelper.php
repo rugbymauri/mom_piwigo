@@ -11,6 +11,8 @@ namespace Mom\MomPiwigo\Utility;
 
 class FlexFormHelper
 {
+
+    private $piwigoURL = null;
     /**
      * @param array $fConfig
      * @param \TYPO3\CMS\Backend\Form\FormEngine $fObj
@@ -20,30 +22,19 @@ class FlexFormHelper
     public function getCategories(&$fConfig, $fObj) {
 
 
-        $pluginConfiguration = array(
-            'extensionName' => 'mompiwigo_piwigo',
-            'pluginName' => 'tx_mompiwigo'
-        );
-        /** @var  \TYPO3\CMS\Extbase\Core\Bootstrap $bootstrap */
-        $bootstrap = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Core\\Bootstrap');
-        $bootstrap->initialize($pluginConfiguration);
+
 
         $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
         /** @var  \TYPO3\CMS\Extbase\Configuration\ConfigurationManager $configurationManager */
         $configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
 
+        $configuration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
-        $configuration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'tx_mompiwigo');
+        $this->piwigoURL = $configuration['plugin.']['tx_mompiwigo.']['settings.']['piwigoURL'];
 
-
-         var_dump($configuration);
-
+        var_dump($this->piwigoURL);
 
         $categoryData = $this->getCategoryList();
-
-
-
-
 
         // change conf
         foreach ($categoryData as $category) {
@@ -59,7 +50,7 @@ class FlexFormHelper
     private function getCategoryList($cat_id = 0, $tree_output = 'true')
     {
 
-        $url = 'http://piwigo.local/ws.php?format=json&method=pwg.categories.getList&recursive=true&fullname=true';
+        $url = $this->piwigoURL . '/ws.php?format=json&method=pwg.categories.getList&recursive=true&fullname=true';
 
         $data = $this->getJSONData($url);
 
