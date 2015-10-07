@@ -42,7 +42,8 @@ class PiwigoController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 */
 	public function showAction($category = 0) {
 
-		var_dump($this->settings['limit']);
+		var_dump($this->settings);
+
 		$categories = $this->getCategoryList($category);
 		$this->view->assign('categories', $categories);
 

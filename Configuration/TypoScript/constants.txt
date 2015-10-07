@@ -1,5 +1,9 @@
 
 plugin.tx_mompiwigo {
+	# cat=plugin.tx_mompiwigo/piwigo_url; type=string; label=URL of the Piwigo
+	settings {
+		piwigoURL = http://piwigo.local
+	}
 	view {
 		# cat=plugin.tx_mompiwigo/file; type=string; label=Path to template root (FE)
 		templateRootPath = EXT:mom_piwigo/Resources/Private/Templates/

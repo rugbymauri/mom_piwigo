@@ -1,5 +1,8 @@
 
 plugin.tx_mompiwigo {
+	settings {
+		piwigoURL = {$plugin.tx_mompiwigo.settings.piwigoURL}
+	}
 	view {
 		templateRootPath = {$plugin.tx_mompiwigo.view.templateRootPath}
 		partialRootPath = {$plugin.tx_mompiwigo.view.partialRootPath}
