@@ -9,6 +9,24 @@
                 </TCEforms>
                 <type>array</type>
                 <el>
+                    <settings.mode>
+                        <TCEforms>
+                            <label>Mode</label>
+                            <config>
+                                <type>select</type>
+                                <items>
+                                    <numIndex index="0" type="array">
+                                        <numIndex index="0">List</numIndex>
+                                        <numIndex index="1">list</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1" type="array">
+                                        <numIndex index="0">Latest</numIndex>
+                                        <numIndex index="1">latest</numIndex>
+                                    </numIndex>
+                                </items>
+                            </config>
+                        </TCEforms>
+                    </settings.mode>
                     <settings.limit>
                         <TCEforms>
                             <label>Limit</label>
@@ -25,8 +43,8 @@
                                 <itemsProcFunc>Mom\MomPiwigo\Utility\FlexFormHelper->getCategories</itemsProcFunc>
                                 <items>
                                     <numIndex index="0" type="array">
-                                        <numIndex index="0"></numIndex>
-                                        <numIndex index="1"></numIndex>
+                                        <numIndex index="0">Root</numIndex>
+                                        <numIndex index="1">0</numIndex>
                                     </numIndex>
                                 </items>
                             </config>

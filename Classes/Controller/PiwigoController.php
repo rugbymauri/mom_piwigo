@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PiwigoController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 
+	private $piwigoURL = null;
 	/**
 	 * action show
 	 *
@@ -42,9 +43,17 @@ class PiwigoController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 */
 	public function showAction($category = 0) {
 
-		var_dump($this->settings);
+	//	var_dump($this->settings);
 
-		$categories = $this->getCategoryList($category);
+		$this->piwigoURL = $this->settings['piwigoURL'];
+
+		$categories = null;
+		if (isset($this->settings['mode']) && $this->settings['mode'] == 'latest') {
+			$categories = $this->getLatestCategory($category, 2);
+		} else {
+			$categories = $this->getCategoryList($category);
+		}
+
 		$this->view->assign('categories', $categories);
 
 		$images = $this->getImages($category);
@@ -56,7 +65,7 @@ class PiwigoController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	private function getCategoryList($cat_id = 0, $tree_output = 'false')
 	{
 
-		$url = 'http://piwigo.local/ws.php?format=json&method=pwg.categories.getList&cat_id=' .$cat_id . '&tree_output='. $tree_output;
+		$url = $this->piwigoURL . '/ws.php?format=json&method=pwg.categories.getList&cat_id=' .$cat_id . '&tree_output='. $tree_output;
 
 		$data = $this->getJSONData($url);
 
@@ -65,9 +74,51 @@ class PiwigoController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	}
 
 
+	private function getLatestCategory($cat_id = 0, $limit = 2 ) {
+		// http://piwigo.local/ws.php?format=rest&method=pwg.categories.getList&cat_id=0$ca&recursive=true
+
+		$url = $this->piwigoURL . '/ws.php?format=json&method=pwg.categories.getList&recursive=true&cat_id=' .$cat_id;
+
+		$data = $this->getJSONData($url);
+
+		$cats = $data['result']['categories'];
+
+
+		uasort($cats, array($this, 'catOrderReverse'));
+
+		$latestCats = array();
+		foreach( $cats as $cat) {
+			if ($cat['nb_categories'] == 0) {
+				$latestCats[] = $cat;
+				$limit--;
+				if ($limit == 0) {
+					break;
+				}
+
+
+			}
+		}
+
+		return $latestCats;
+
+	}
+
+
+	public function catOrderReverse($x, $y) {
+		//
+
+		if ( $x['date_last'] == $y['date_last'] )
+			return 0;
+		else if ( $x['date_last'] < $y['date_last'] )
+			return 1;
+		else
+			return -1;
+	}
+	
+
 	private function getImages($categoryId = 0) {
 
-			$url = 'http://piwigo.local/ws.php?format=json&method=pwg.categories.getImages&cat_id=' . $categoryId . '&recursive=false';
+			$url = $this->piwigoURL . '/ws.php?format=json&method=pwg.categories.getImages&cat_id=' . $categoryId . '&recursive=false';
 			$data = $this->getJSONData($url);
 			return $data['result']['images'];
 

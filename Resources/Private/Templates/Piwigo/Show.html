@@ -2,30 +2,66 @@
 <f:layout name="Default" />
 <f:section name="main">
 
-  <f:if condition="{categories}">
-    <h1>Categories</h1>
-  <f:for each="{categories}" as="category">
-    <div>
-      <h2>{category.name}</h2>
-      Images: {category.nb_images}<br>
 
-      <f:link.action action="show" arguments="{category: category.id}">Show Category {category.name}</f:link.action><br />
-      <img src="{category.tn_url}">
-    </div>
-  </f:for>
-  </f:if>
 
+  <br>
 
   <f:if condition="{images}">
-  <h1>Images</h1>
-  <f:for each="{images}" as="image">
-    <div>
-      <h2>{image.name}</h2>
-      Id: {image.id}
-      <img src="{image.derivatives.square.url}" width="{image.derivatives.square.width}" height="{image.derivatives.square.height}">
-      <img src="{image.derivatives.medium.url}" width="{image.derivatives.medium.width}" height="{image.derivatives.medium.height}">
-    </div>
-  </f:for>
-  </f:if>
 
+    <f:then>
+      <f:if condition="{categories}">
+        <f:for each="{categories}" as="category">
+          <div>
+
+            <h2>{category.name}</h2>
+            Images: {category.nb_images}<br>
+            <f:if condition="{category.comment}">
+              Description: {category.comment}<br>
+            </f:if>
+
+
+          </div>
+        </f:for>
+      </f:if>
+
+
+      <div class="fluid_container">
+    <div class="camera_wrap camera_magenta_skin" id="camera_wrap">
+      <f:for each="{images}" as="image">
+        <div data-thumb="{image.derivatives.square.url}" data-src="{image.derivatives.medium.url}"></div>
+      </f:for>
+    </div><!-- #camera_wrap -->
+    </div>
+
+    <script>
+      camereHeight = '{images.0.derivatives.medium.height}px';
+    </script>
+    </f:then>
+    <f:else>
+
+
+      <f:if condition="{categories}">
+        <h1>Categories</h1>
+        <f:for each="{categories}" as="category">
+            <div>
+              
+              <h2>{category.name}</h2>
+              Images: {category.nb_images}<br>
+              <f:if condition="{category.comment}">
+                Description: {category.comment}<br>
+              </f:if>
+
+
+              <f:link.action action="show" arguments="{category: category.id}">Show Category {category.name}</f:link.action><br />
+              <img src="{category.tn_url}">
+            </div>
+
+        </f:for>
+      </f:if>
+
+
+
+    </f:else>
+
+    </f:if>
 </f:section>

@@ -14,36 +14,10 @@ plugin.tx_mompiwigo {
 	}
 }
 
-plugin.tx_mompiwigo._CSS_DEFAULT_STYLE (
-	textarea.f3-form-error {
-		background-color:#FF9F9F;
-		border: 1px #FF0000 solid;
-	}
+page.includeCSS.gallery = EXT:mom_piwigo/Resources/Public/css/camera.css
+page.includeJSFooterlibs.jquery_mobile = EXT:mom_piwigo/Resources/Public/js/jquery.mobile.customized.min.js
+page.includeJSFooterlibs.jquery_easing = EXT:mom_piwigo/Resources/Public/js/jquery.easing.1.3.js
+page.includeJSFooterlibs.camera = EXT:mom_piwigo/Resources/Public/js/camera.min.js
+page.includeJSFooterlibs.gallery_app = EXT:mom_piwigo/Resources/Public/js/app.js
 
-	input.f3-form-error {
-		background-color:#FF9F9F;
-		border: 1px #FF0000 solid;
-	}
 
-	.tx-mom-piwigo table {
-		border-collapse:separate;
-		border-spacing:10px;
-	}
-
-	.tx-mom-piwigo table th {
-		font-weight:bold;
-	}
-
-	.tx-mom-piwigo table td {
-		vertical-align:top;
-	}
-
-	.typo3-messages .message-error {
-		color:red;
-	}
-
-	.typo3-messages .message-ok {
-		color:green;
-	}
-
-)
