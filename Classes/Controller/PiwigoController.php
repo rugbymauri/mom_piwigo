@@ -33,6 +33,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PiwigoController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
+	const DEFAULT_LIMIT = 2;
+	const DEFAULT_CATEGORY = 0;
+	const DEFAULT_TREEOUTPUT = 'false';
 
 	private $piwigoURL = null;
 	/**
@@ -41,17 +44,26 @@ class PiwigoController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 * @param string $category
 	 * @return void
 	 */
-	public function showAction($category = 0) {
+	public function showAction($category = self::DEFAULT_CATEGORY) {
 
 	//	var_dump($this->settings);
 
 		$this->piwigoURL = $this->settings['piwigoURL'];
 
 		$categories = null;
-		if (isset($this->settings['mode']) && $this->settings['mode'] == 'latest') {
-			$categories = $this->getLatestCategory($category, 2);
-		} else {
-			$categories = $this->getCategoryList($category);
+		$limit = self::DEFAULT_LIMIT;
+
+		if (isset($this->settings['mode'])) {
+			switch ($this->settings['mode']) {
+				case 'latest':
+					$categories = $this->getLatestCategory($category, $limit);
+					break;
+				case 'random':
+					$categories = $this->getRandomCategory($category, $limit);
+					break;
+				default:
+					$categories = $this->getCategoryList($category);
+			}
 		}
 
 		$this->view->assign('categories', $categories);
@@ -62,7 +74,7 @@ class PiwigoController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
 
 
-	private function getCategoryList($cat_id = 0, $tree_output = 'false')
+	private function getCategoryList($cat_id = self::DEFAULT_CATEGORY, $tree_output = self::DEFAULT_TREEOUTPUT)
 	{
 
 		$url = $this->piwigoURL . '/ws.php?format=json&method=pwg.categories.getList&cat_id=' .$cat_id . '&tree_output='. $tree_output;
@@ -74,7 +86,7 @@ class PiwigoController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	}
 
 
-	private function getLatestCategory($cat_id = 0, $limit = 2 ) {
+	private function getLatestCategory($cat_id = self::DEFAULT_CATEGORY, $limit = self::DEFAULT_LIMIT ) {
 		// http://piwigo.local/ws.php?format=rest&method=pwg.categories.getList&cat_id=0$ca&recursive=true
 
 		$url = $this->piwigoURL . '/ws.php?format=json&method=pwg.categories.getList&recursive=true&cat_id=' .$cat_id;
@@ -103,6 +115,41 @@ class PiwigoController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
 	}
 
+	private function getRandomCategory($cat_id = self::DEFAULT_CATEGORY, $limit = self::DEFAULT_LIMIT ) {
+		// http://piwigo.local/ws.php?format=rest&method=pwg.categories.getList&cat_id=0$ca&recursive=true
+
+		$url = $this->piwigoURL . '/ws.php?format=json&method=pwg.categories.getList&recursive=true&cat_id=' .$cat_id;
+
+		$data = $this->getJSONData($url);
+
+		$cats = $data['result']['categories'];
+
+		$numberOfCatagories = count($cats);
+
+		$randomCategories = array();
+		if ($numberOfCatagories >= $limit) {
+			$randomCategories = array_rand($cats, $limit);
+		} else {
+			$randomCategories = $cats;
+		}
+
+
+
+		foreach( $cats as $cat) {
+			if ($cat['nb_categories'] == 0) {
+				$randomCategories[] = $cat;
+				$limit--;
+				if ($limit == 0) {
+					break;
+				}
+
+
+			}
+		}
+
+		return $randomCategories;
+
+	}
 
 	public function catOrderReverse($x, $y) {
 		//
@@ -116,7 +163,7 @@ class PiwigoController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	}
 	
 
-	private function getImages($categoryId = 0) {
+	private function getImages($categoryId = self::DEFAULT_CATEGORY) {
 
 			$url = $this->piwigoURL . '/ws.php?format=json&method=pwg.categories.getImages&cat_id=' . $categoryId . '&recursive=false';
 			$data = $this->getJSONData($url);

@@ -21,9 +21,6 @@ class FlexFormHelper
      */
     public function getCategories(&$fConfig, $fObj) {
 
-
-
-
         $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
         /** @var  \TYPO3\CMS\Extbase\Configuration\ConfigurationManager $configurationManager */
         $configurationManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
@@ -31,8 +28,6 @@ class FlexFormHelper
         $configuration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
         $this->piwigoURL = $configuration['plugin.']['tx_mompiwigo.']['settings.']['piwigoURL'];
-
-        var_dump($this->piwigoURL);
 
         $categoryData = $this->getCategoryList();
 

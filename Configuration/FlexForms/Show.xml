@@ -23,6 +23,10 @@
                                         <numIndex index="0">Latest</numIndex>
                                         <numIndex index="1">latest</numIndex>
                                     </numIndex>
+                                    <numIndex index="2" type="array">
+                                        <numIndex index="0">Random</numIndex>
+                                        <numIndex index="1">random</numIndex>
+                                    </numIndex>
                                 </items>
                             </config>
                         </TCEforms>
