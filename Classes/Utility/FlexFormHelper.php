@@ -29,6 +29,7 @@ class FlexFormHelper
 
         $this->piwigoURL = $configuration['plugin.']['tx_mompiwigo.']['settings.']['piwigoURL'];
 
+        echo $this->piwigoURL;
         $categoryData = $this->getCategoryList();
 
         // change conf

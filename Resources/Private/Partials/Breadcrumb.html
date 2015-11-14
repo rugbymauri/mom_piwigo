@@ -1,0 +1,13 @@
+<f:if condition="{breadcrumb}">
+    <f:for each="{breadcrumb}" as="category">
+        <f:if condition="{current.id} == {category.id}">
+            <f:then>
+                {category.name}
+            </f:then>
+            <f:else>
+                <f:link.action action="show" arguments="{category: category.id}">{category.name}</f:link.action> >
+            </f:else>
+        </f:if>
+
+    </f:for>
+</f:if>

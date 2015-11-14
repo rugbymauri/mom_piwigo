@@ -1,0 +1,43 @@
+<div class="news">
+    <div class="news-list-view">
+        <ul>
+            <f:for each="{categories}" as="category"    >
+                <li class="article medium-4">
+                    <!-- footer information -->
+                    <div class="news-list-info medium-6 column">
+                        <!-- date -->
+						<span class="news-list-date">
+                            <f:if condition="{category.nb_images}">
+                                {category.nb_images} Bilder<br>
+                            </f:if>
+                            <f:if condition="{category.nb_categories}">
+                                {category.nb_categories} Albums<br>
+                            </f:if>
+
+						</span>
+
+                    </div>
+                    <div class="news-list-content medium-6 column">
+                        <div class="header">
+                            <h3><f:link.action action="show" arguments="{category: category.id}">{category.name}</f:link.action></h3>
+                        </div>
+                        <div class="news-img-wrap">
+                            <f:link.action action="show" arguments="{category: category.id}">
+                                <img src="{category.tn_url}">
+                            </f:link.action>
+                        </div>
+
+                        <!-- teas=ser text -->
+                        <div class="teaser-text">
+                            <p class="bodytext">
+                                <f:format.nl2br>
+                                    {category.comment}
+                                </f:format.nl2br>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            </f:for>
+        </ul>
+    </div>
+</div>

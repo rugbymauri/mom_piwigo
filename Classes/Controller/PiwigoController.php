@@ -37,6 +37,8 @@ class PiwigoController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	const DEFAULT_CATEGORY = 0;
 	const DEFAULT_TREEOUTPUT = 'false';
 
+	private $categories = null;
+
 	private $piwigoURL = null;
 	/**
 	 * action show
@@ -70,8 +72,36 @@ class PiwigoController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
 		$images = $this->getImages($category);
 		$this->view->assign('images', $images);
+
+
+		$breadCrumb = $this->getBreadCrumb($category);
+		$this->view->assign('breadcrumb', $breadCrumb);
+
+		if ($category > 0) {
+			$this->initCategories();
+			$this->view->assign('current', $this->categories[$category] );
+		}
+
 	}
 
+	private function getBreadCrumb($catId = self::DEFAULT_CATEGORY) {
+		$result = array();
+		$this->initCategories();
+
+		if (isset($this->categories[$catId])) {
+
+			$upperCats = array_reverse(explode(',', $this->categories[$catId]['uppercats']));
+			foreach ($upperCats as $cat) {
+				array_unshift($result, $this->categories[$cat]);
+			}
+
+
+		}
+
+		return $result;
+
+
+	}
 
 
 	private function getCategoryList($cat_id = self::DEFAULT_CATEGORY, $tree_output = self::DEFAULT_TREEOUTPUT)
@@ -81,7 +111,20 @@ class PiwigoController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
 		$data = $this->getJSONData($url);
 
-		return $data['result']['categories'];
+
+		$categories = $data['result']['categories'];
+
+		$result = array();
+
+		foreach($categories as $category) {
+			if ($cat_id == $category['id']) {
+				continue;
+			}
+
+			$result[] = $category;
+		}
+
+		return $result;
 
 	}
 
@@ -99,15 +142,17 @@ class PiwigoController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		uasort($cats, array($this, 'catOrderReverse'));
 
 		$latestCats = array();
-		foreach( $cats as $cat) {
-			if ($cat['nb_categories'] == 0) {
-				$latestCats[] = $cat;
+		foreach( $cats as $category) {
+			if ($cat_id == $category['id']) {
+				continue;
+			}
+
+			if ($category['nb_categories'] == 0) {
+				$latestCats[] = $category;
 				$limit--;
 				if ($limit == 0) {
 					break;
 				}
-
-
 			}
 		}
 
@@ -186,11 +231,29 @@ class PiwigoController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		$result = curl_exec($ch);
 		curl_close($ch);
 */
-		$result = GeneralUtility::getUrl($url);
+		$result = GeneralUtility::getUrl($url . '&' . rand(0, 100000000));
 
 		$data = json_decode($result, true);
 
 		return $data;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	private function initCategories()
+	{
+		if ($this->categories == null) {
+			$this->categories = array();
+			$url = $this->piwigoURL . '/ws.php?format=json&method=pwg.categories.getList&cat_id=0&recursive=true';
+			$data = $this->getJSONData($url);
+
+
+			foreach ($data['result']['categories'] as $cat) {
+				$this->categories[$cat['id']] = $cat;
+			}
+
+		}
 	}
 
 

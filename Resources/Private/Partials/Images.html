@@ -1,0 +1,11 @@
+<div class="galleria">
+    <f:for each="{images}" as="image">
+        <img src="{image.derivatives.medium.url}">
+    </f:for>
+</div>
+
+
+<script>
+    Galleria.loadTheme('/typo3conf/ext/rcb/Resources/Public/Template/js/galleria/themes/classic/galleria.classic.min.js');
+    Galleria.run('.galleria');
+</script>

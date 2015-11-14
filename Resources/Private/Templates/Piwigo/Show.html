@@ -1,67 +1,25 @@
-
 <f:layout name="Default" />
 <f:section name="main">
 
-
-
-  <br>
+<div id="piwigo">
+  <div class="breadcrumb">
+    <f:render partial="Breadcrumb" arguments="{breadcrumb: breadcrumb, current: current}"></f:render>
+  </div>
 
   <f:if condition="{images}">
-
     <f:then>
       <f:if condition="{categories}">
-        <f:for each="{categories}" as="category">
-          <div>
-
-            <h2>{category.name}</h2>
-            Images: {category.nb_images}<br>
-            <f:if condition="{category.comment}">
-              Description: {category.comment}<br>
-            </f:if>
-
-
-          </div>
-        </f:for>
+        <f:render partial="Categories" arguments="{categories: categories}"></f:render>
       </f:if>
+      <f:render partial="Jssor/Images" arguments="{images: images}"></f:render>
 
-
-      <div class="fluid_container">
-    <div class="camera_wrap camera_magenta_skin" id="camera_wrap">
-      <f:for each="{images}" as="image">
-        <div data-thumb="{image.derivatives.square.url}" data-src="{image.derivatives.medium.url}"></div>
-      </f:for>
-    </div><!-- #camera_wrap -->
-    </div>
-
-    <script>
-      camereHeight = '{images.0.derivatives.medium.height}px';
-    </script>
     </f:then>
     <f:else>
-
-
       <f:if condition="{categories}">
-        <h1>Categories</h1>
-        <f:for each="{categories}" as="category">
-            <div>
-              
-              <h2>{category.name}</h2>
-              Images: {category.nb_images}<br>
-              <f:if condition="{category.comment}">
-                Description: {category.comment}<br>
-              </f:if>
-
-
-              <f:link.action action="show" arguments="{category: category.id}">Show Category {category.name}</f:link.action><br />
-              <img src="{category.tn_url}">
-            </div>
-
-        </f:for>
+        <f:render partial="Categories" arguments="{categories: categories}"></f:render>
       </f:if>
-
-
-
     </f:else>
 
-    </f:if>
+  </f:if>
+</div>
 </f:section>
